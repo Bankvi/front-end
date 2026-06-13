@@ -8,7 +8,7 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://api-bankvi.duckd
 export function ContactForm() {
   const t = useTranslations("contact");
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
-  const [data, setData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [data, setData] = useState({ full_name: "", email: "", subject: "", message: "" });
 
   const set = (k: keyof typeof data) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setData((d) => ({ ...d, [k]: e.target.value }));
@@ -59,7 +59,7 @@ export function ContactForm() {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input className={inputClass} style={inputStyle} placeholder={t("name_placeholder")} value={data.name} onChange={set("name")} />
+        <input className={inputClass} style={inputStyle} placeholder={t("name_placeholder")} value={data.full_name} onChange={set("full_name")} />
         <input className={inputClass} style={inputStyle} type="email" placeholder={t("email_placeholder")} value={data.email} onChange={set("email")} />
       </div>
       <input className={inputClass} style={inputStyle} placeholder={t("subject_placeholder")} value={data.subject} onChange={set("subject")} />
@@ -75,7 +75,7 @@ export function ContactForm() {
       )}
       <button
         onClick={submit}
-        disabled={status === "sending" || !data.name || !data.email || !data.message}
+        disabled={status === "sending" || !data.full_name || !data.email || !data.message}
         className="w-full py-4 rounded-2xl font-semibold text-sm text-white flex items-center justify-center gap-2.5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
         style={{
           background: "linear-gradient(135deg, var(--gold-dark), var(--gold))",

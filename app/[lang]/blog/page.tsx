@@ -13,6 +13,7 @@ async function getPosts(lang: string) {
   } catch { return []; }
 }
 
+
 const placeholderPosts = [
   { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit", cover_image: "" },
   { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie", cover_image: "" },
