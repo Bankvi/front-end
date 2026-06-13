@@ -6,14 +6,14 @@ import { Tilt3D } from "@/components/ui/Tilt3D";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface Post { id: number; title: string; excerpt: string; date: string; category?: string; slug: string; }
+interface Post { id: number; slug?: string; title: string; excerpt: string; date: string; category?: string; cover_image?: string; }
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://api-bankvi.duckdns.org";
 
 const placeholderPosts: Post[] = [
-  { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit" ,slug: "bankvi-revolutionne-la-tontine-en-afrique-de-louest"},
-  { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie" ,slug: "esso-la-tontine-3-0-propulsee-par-la-blockchain"},
-  { id: 3, title: "Partenariat FedaPay : paiements Mobile Money sans friction", excerpt: "L'intégration native de FedaPay permet les dépôts et retraits Flooz / T-Money directement dans l'application.", date: "2025-04-01", category: "Finance" ,slug: "partenariat-fedapay-paiements-mobile-money-sans-friction"},
+  { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit", cover_image: "" },
+  { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie", cover_image: "" },
+  { id: 3, title: "Partenariat FedaPay : paiements Mobile Money sans friction", excerpt: "L'intégration native de FedaPay permet les dépôts et retraits Flooz / T-Money directement dans l'application.", date: "2025-04-01", category: "Finance", cover_image: "" },
 ];
 
 export function BlogPreview({ locale }: { locale: string }) {
@@ -63,36 +63,85 @@ export function BlogPreview({ locale }: { locale: string }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {posts.map((post, i) => {
             const cat = post.category ?? categories[i % categories.length];
+            const href = `/${locale}/blog/${post.slug ?? post.id}`;
             return (
               <ScrollReveal key={post.id} delay={i * 100} mode="scale">
                 <Tilt3D className="h-full">
-                  <Link href={`/${locale}/blog/${post.slug}`} className="block h-full group">
+                  <Link href={href} className="block h-full group">
                     <div
-                      className="glass-real rounded-3xl p-7 h-full flex flex-col transition-all duration-400 hover:border-[var(--gold-dark)] hover:-translate-y-1"
-                      style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.05)", minHeight: 260 }}
+                      className="glass-real rounded-3xl overflow-hidden h-full flex flex-col transition-all duration-400 hover:border-[var(--gold-dark)] hover:-translate-y-1"
+                      style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}
                     >
-                      {/* Category badge */}
+                      {/* Cover image */}
                       <div
-                        className="inline-flex self-start px-3 py-1 rounded-full text-[11px] font-semibold mb-4"
-                        style={{ background: catColors[cat] ?? "rgba(213,156,124,0.1)", color: catText[cat] ?? "var(--gold)" }}
+                        className="relative w-full overflow-hidden"
+                        style={{ height: 180 }}
                       >
-                        {cat}
+                        {post.cover_image ? (
+                          <img
+                            src={post.cover_image}
+                            alt={post.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        ) : (
+                          /* Fallback gradient cover when no image */
+                          <div
+                            className="w-full h-full flex items-center justify-center"
+                            style={{
+                              background: `linear-gradient(135deg,
+                                ${catColors[cat] ? catColors[cat].replace("0.12","0.25") : "rgba(213,156,124,0.25)"} 0%,
+                                rgba(213,156,124,0.05) 100%)`,
+                            }}
+                          >
+                            <span
+                              className="text-5xl font-bold opacity-10 select-none"
+                              style={{ color: catText[cat] ?? "var(--gold)" }}
+                            >
+                              {post.title.charAt(0)}
+                            </span>
+                          </div>
+                        )}
+                        {/* Shimmer overlay on hover */}
+                        <div
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                          style={{
+                            background: "linear-gradient(135deg, rgba(213,156,124,0.12) 0%, transparent 60%)",
+                          }}
+                        />
+                        {/* Category badge over the image */}
+                        <div className="absolute top-3 left-3">
+                          <div
+                            className="px-3 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md"
+                            style={{
+                              background: "rgba(10,10,10,0.55)",
+                              border: "1px solid rgba(255,255,255,0.12)",
+                              color: catText[cat] ?? "var(--gold)",
+                            }}
+                          >
+                            {cat}
+                          </div>
+                        </div>
                       </div>
 
-                      <h3 className="font-bold text-base text-[var(--text)] mb-3 leading-snug group-hover:gold-text transition-colors duration-200 line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-sm text-[var(--text-muted)] leading-relaxed flex-1 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-
-                      <div className="flex items-center justify-between mt-6 pt-4" style={{ borderTop: "1px solid var(--glass-border)" }}>
-                        <span className="text-[11px] text-[var(--text-faint)]">
-                          {new Date(post.date).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })}
-                        </span>
-                        <span className="text-xs font-semibold gold-text-solid flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
-                          {t("read_more")} <ArrowRight size={12} />
-                        </span>
+                      {/* Text content */}
+                      <div className="flex flex-col flex-1 p-6">
+                        <h3 className="font-bold text-base text-[var(--text)] mb-2.5 leading-snug group-hover:text-[var(--gold)] transition-colors duration-200 line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-[var(--text-muted)] leading-relaxed flex-1 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                        <div
+                          className="flex items-center justify-between mt-5 pt-4"
+                          style={{ borderTop: "1px solid var(--glass-border)" }}
+                        >
+                          <span className="text-[11px] text-[var(--text-faint)]">
+                            {new Date(post.date).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })}
+                          </span>
+                          <span className="text-xs font-semibold gold-text-solid flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
+                            {t("read_more")} <ArrowRight size={12} />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </Link>
