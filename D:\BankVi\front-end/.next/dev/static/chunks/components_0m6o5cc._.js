@@ -2933,9 +2933,9 @@ function BlogPreview({ locale }) {
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "grid grid-cols-1 md:grid-cols-3 gap-5",
-                    children: posts.map((post, i)=>{
+                    children: posts.slice(0, 3).map((post, i)=>{
                         const cat = post.category ?? categories[i % categories.length];
-                        const href = `/${locale}/blog/${post.slug ?? post.id}`;
+                        const href = `/${locale}/blog/${post.slug}`;
                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$ScrollReveal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollReveal"], {
                             delay: i * 100,
                             mode: "scale",

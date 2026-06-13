@@ -61,9 +61,9 @@ export function BlogPreview({ locale }: { locale: string }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {posts.map((post, i) => {
+          {posts.slice(0,3).map((post, i) => {
             const cat = post.category ?? categories[i % categories.length];
-            const href = `/${locale}/blog/${post.slug ?? post.id}`;
+            const href = `/${locale}/blog/${post.slug}`;
             return (
               <ScrollReveal key={post.id} delay={i * 100} mode="scale">
                 <Tilt3D className="h-full">

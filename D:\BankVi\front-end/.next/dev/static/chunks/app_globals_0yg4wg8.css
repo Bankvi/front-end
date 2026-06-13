@@ -1371,13 +1371,6 @@
     overflow: hidden;
   }
 
-  .line-clamp-3 {
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    overflow: hidden;
-  }
-
   .block {
     display: block;
   }
@@ -1788,10 +1781,6 @@
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
     margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
-  }
-
-  .self-start {
-    align-self: flex-start;
   }
 
   .overflow-hidden {
