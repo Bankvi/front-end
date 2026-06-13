@@ -16,7 +16,7 @@ export function ContactForm() {
   const submit = async () => {
     setStatus("sending");
     try {
-      const r = await fetch(`${BACKEND}/api/contact/`, {
+      const r = await fetch(`${BACKEND}/api/v1/public/contact/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

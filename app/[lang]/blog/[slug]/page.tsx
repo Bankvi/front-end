@@ -7,7 +7,8 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://api-bankvi.duckd
 
 async function getPost(slug: string, lang: string) {
   try {
-    const r = await fetch(`${BACKEND}/api/blog/posts/${slug}/?lang=${lang}`, { next: { revalidate: 3600 } });
+    const r = await fetch(`${BACKEND}/api/v1/public/blog/${slug}/?lang=${lang}`, { next: { revalidate: 3600 } });
+    console.log(`Fetching blog post: ${slug} (${lang}) returned status ${r.status}`);
     return r.ok ? r.json() : null;
   } catch { return null; }
 }
@@ -15,7 +16,8 @@ async function getPost(slug: string, lang: string) {
 export default async function BlogPostPage({ params }: { params: Promise<{ lang: string; slug: string }> }) {
   const { lang, slug } = await params;
   const t = await getTranslations("blog");
-  const post = await getPost(slug, lang);
+  const post = (await getPost(slug, lang)).data;
+
 
   if (!post) {
     return (

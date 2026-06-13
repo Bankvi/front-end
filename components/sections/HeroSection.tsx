@@ -155,6 +155,13 @@ function PhoneMockup() {
                 />
               </div>
             </div>
+
+            <div
+              className="glass-real rounded-2xl pl-4 pt-2 pb-2"
+            >
+              <div className="text-[9px] text-[var(--text-muted)] font-medium">Dépôt reçu</div>
+              <div className="text-[11px] font-bold text-emerald-500">+25 000 XOF</div>
+            </div>
           </div>
 
           {/* Bottom nav bar */}
@@ -192,9 +199,10 @@ function PhoneMockup() {
           className="absolute top-20 -right-4 w-1.5 h-40 rounded-full blur-sm opacity-60"
           style={{ background: "linear-gradient(to bottom, var(--gold-light), transparent)" }}
         />
+            
       </div>
 
-      {/* Floating badges */}
+      {/* Floating badges 
       <div
         className="animate-float absolute -left-12 top-16 glass-real rounded-2xl px-3.5 py-2.5"
         style={{ animationDelay: "0.5s", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
@@ -218,7 +226,9 @@ function PhoneMockup() {
           <span className="text-[9px] font-semibold text-[var(--text)]">Polygon</span>
         </div>
         <div className="text-[8px] text-[var(--text-muted)]">Tx validée</div>
-      </div>
+      </div>*/}
+
+
     </div>
   );
 }

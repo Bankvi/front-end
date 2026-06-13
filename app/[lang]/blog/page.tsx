@@ -6,17 +6,17 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://api-bankvi.duckd
 
 async function getPosts(lang: string) {
   try {
-    const r = await fetch(`${BACKEND}/api/blog/posts/?lang=${lang}`, { next: { revalidate: 1800 } });
+    const r = await fetch(`${BACKEND}/api/v1/public/blog?lang=${lang}`, { next: { revalidate: 1800 } });
     const d = await r.json();
-    return d?.results ?? d ?? [];
+    return d?.data ?? d ?? [];
   } catch { return []; }
 }
 
 const placeholderPosts = [
-  { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit" },
-  { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie" },
-  { id: 3, title: "Partenariat FedaPay : paiements Mobile Money sans friction", excerpt: "L'intégration native de FedaPay permet les dépôts et retraits Flooz / T-Money directement dans l'application.", date: "2025-04-01", category: "Finance" },
-  { id: 4, title: "La Tironienne : votre épargne programmable à portée de main", excerpt: "Créez autant de sous-comptes d'épargne que vous voulez, avec des objectifs personnalisés et un suivi de progression.", date: "2025-03-15", category: "Produit" },
+  { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit" ,slug:"bankvi-revolutionne-la-tontine-en-afrique-de-louest"},
+  { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie" ,slug:"esso-la-tontine-3-0-propulsee-par-la-blockchain"},
+  { id: 3, title: "Partenariat FedaPay : paiements Mobile Money sans friction", excerpt: "L'intégration native de FedaPay permet les dépôts et retraits Flooz / T-Money directement dans l'application.", date: "2025-04-01", category: "Finance" ,slug:"partenariat-fedapay-paiements-mobile-money-sans-friction"},
+  { id: 4, title: "La Tironienne : votre épargne programmable à portée de main", excerpt: "Créez autant de sous-comptes d'épargne que vous voulez, avec des objectifs personnalisés et un suivi de progression.", date: "2025-03-15", category: "Produit" ,slug:"la-tironienne-votre-epargne-programmable-a-portee-de-main"},
 ];
 
 export default async function BlogPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -46,11 +46,11 @@ export default async function BlogPage({ params }: { params: Promise<{ lang: str
           <p className="text-center text-[var(--text-muted)]">{t("no_posts")}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post: { id: number; title: string; excerpt: string; date: string; category?: string }) => {
+            {posts.map((post: { id: number; title: string; excerpt: string; date: string; category?: string; slug: string }) => {
               const cat = post.category ?? categories[post.id % categories.length];
               const c = catColors[cat] ?? catColors["Produit"];
               return (
-                <Link key={post.id} href={`/${lang}/blog/${post.id}`} className="group block">
+                <Link key={post.id} href={`/${lang}/blog/${post.slug}`} className="group block">
                   <div
                     className="glass-real rounded-3xl p-7 h-full flex flex-col transition-all duration-400 hover:border-[var(--gold-dark)] hover:-translate-y-1.5"
                     style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.05)", minHeight: 280 }}

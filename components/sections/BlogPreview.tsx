@@ -6,14 +6,14 @@ import { Tilt3D } from "@/components/ui/Tilt3D";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface Post { id: number; title: string; excerpt: string; date: string; category?: string; }
+interface Post { id: number; title: string; excerpt: string; date: string; category?: string; slug: string; }
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://api-bankvi.duckdns.org";
 
 const placeholderPosts: Post[] = [
-  { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit" },
-  { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie" },
-  { id: 3, title: "Partenariat FedaPay : paiements Mobile Money sans friction", excerpt: "L'intégration native de FedaPay permet les dépôts et retraits Flooz / T-Money directement dans l'application.", date: "2025-04-01", category: "Finance" },
+  { id: 1, title: "BankVi révolutionne la tontine en Afrique de l'Ouest", excerpt: "Découvrez comment notre plateforme transforme la pratique ancestrale des tontines en un système digital sécurisé.", date: "2025-05-01", category: "Produit" ,slug: "bankvi-revolutionne-la-tontine-en-afrique-de-louest"},
+  { id: 2, title: "ESSO : la tontine 3.0 propulsée par la blockchain", excerpt: "Notre module ESSO enregistre chaque tirage sur la blockchain Polygon pour une transparence totale et irréfutable.", date: "2025-04-15", category: "Technologie" ,slug: "esso-la-tontine-3-0-propulsee-par-la-blockchain"},
+  { id: 3, title: "Partenariat FedaPay : paiements Mobile Money sans friction", excerpt: "L'intégration native de FedaPay permet les dépôts et retraits Flooz / T-Money directement dans l'application.", date: "2025-04-01", category: "Finance" ,slug: "partenariat-fedapay-paiements-mobile-money-sans-friction"},
 ];
 
 export function BlogPreview({ locale }: { locale: string }) {
@@ -21,9 +21,9 @@ export function BlogPreview({ locale }: { locale: string }) {
   const [posts, setPosts] = useState<Post[]>(placeholderPosts);
 
   useEffect(() => {
-    fetch(`${BACKEND}/api/blog/posts/?lang=${locale}&limit=3`)
+    fetch(`${BACKEND}/api/v1/public/blog?lang=${locale}&limit=3`)
       .then((r) => r.json())
-      .then((d) => { if (d?.results?.length) setPosts(d.results); })
+      .then((d) => { if (d?.data?.length) setPosts(d.data); })
       .catch(() => {});
   }, [locale]);
 
@@ -66,7 +66,7 @@ export function BlogPreview({ locale }: { locale: string }) {
             return (
               <ScrollReveal key={post.id} delay={i * 100} mode="scale">
                 <Tilt3D className="h-full">
-                  <Link href={`/${locale}/blog/${post.id}`} className="block h-full group">
+                  <Link href={`/${locale}/blog/${post.slug}`} className="block h-full group">
                     <div
                       className="glass-real rounded-3xl p-7 h-full flex flex-col transition-all duration-400 hover:border-[var(--gold-dark)] hover:-translate-y-1"
                       style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.05)", minHeight: 260 }}

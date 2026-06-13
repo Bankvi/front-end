@@ -6,9 +6,9 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://api-bankvi.duckd
 
 async function getFaqs(lang: string) {
   try {
-    const r = await fetch(`${BACKEND}/api/faqs/?lang=${lang}`, { next: { revalidate: 3600 } });
+    const r = await fetch(`${BACKEND}/api/v1/public/faq/?lang=${lang}`, { next: { revalidate: 3600 } });
     const d = await r.json();
-    return d?.results ?? d ?? [];
+    return d?.data ?? d ?? [];
   } catch { return []; }
 }
 
@@ -23,7 +23,14 @@ const placeholderFaqs = [
 export default async function FaqPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const t = await getTranslations("faq");
-  const faqs = (await getFaqs(lang)).length ? await getFaqs(lang) : placeholderFaqs;
+
+
+  //const faqs = (await getFaqs(lang)).length ? await getFaqs(lang) : placeholderFaqs;
+
+  const fetchedFaqs = await getFaqs(lang);
+  
+  // 2. On vérifie le résultat de manière sûre
+  const faqs = fetchedFaqs && fetchedFaqs.length ? fetchedFaqs : placeholderFaqs;
 
   return (
     <main className="min-h-screen pt-28 pb-20 px-5 lg:px-8">
