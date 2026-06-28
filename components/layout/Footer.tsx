@@ -116,7 +116,9 @@ export function Footer({ locale }: FooterProps) {
             Propulsé par Polygon
           </div>
           <span className="text-xs text-[var(--text-faint)]">
-            {t("made_in")}
+            {t("made_in")}  by <Link href={"https://faychal.vercel.app"} className="text-sm text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors duration-200">
+                                KGF Studio
+                              </Link>
           </span>
         </div>
       </div>
