@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { ArrowRight, Download, Users, Zap, Shield, TrendingUp } from "lucide-react";
+import { ArrowRight, Download, Users, Zap, Shield, TrendingUp, Home, Contact2, Wallet2, PiggyBank, HandCoins } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 
@@ -73,7 +73,7 @@ function PhoneMockup() {
         >
           {/* Status bar */}
           <div className="flex items-center justify-between px-6 pt-5 pb-3">
-            <span className="text-[10px] font-semibold text-[var(--text-muted)]">9:41</span>
+            <span className="text-[10px] font-semibold text-[var(--text-muted)]">07:07</span>
             <div
               className="w-20 h-5 rounded-full"
               style={{ background: "var(--bg-card)", border: "1px solid var(--glass-border)" }}
@@ -172,17 +172,18 @@ function PhoneMockup() {
               borderTop: "1px solid var(--glass-border)",
             }}
           >
-            {["Accueil", "ESSO", "Épargne", "Wallet", "Profil"].map((item, i) => (
-              <div key={item} className="flex flex-col items-center gap-0.5">
+            {[{name: "Accueil", icon :Home }, {name : "ESSO", icon : HandCoins}, { name : "Épargne",icon: PiggyBank},{ name : "Wallet",icon: Wallet2 }, {name : "Contact",icon: Contact2}].map((item, i) => (
+              <div key={i} className="flex flex-col items-center gap-0.5">
                 <div
-                  className="w-1 h-1 rounded-full"
-                  style={{ background: i === 0 ? "var(--gold)" : "var(--text-faint)" }}
-                />
+                  className=""
+                >
+                  <item.icon size={12} style={{ color: i === 0 ? "var(--gold)" : "var(--text-faint)" }} />
+                </div>
                 <div
                   className="text-[7px] font-medium"
                   style={{ color: i === 0 ? "var(--gold)" : "var(--text-faint)" }}
                 >
-                  {item}
+                  {item.name}
                 </div>
               </div>
             ))}
